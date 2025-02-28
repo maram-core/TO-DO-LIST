@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Level Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #e2d8dd;
+        }
+        .quiz-container {
+            width: 400px;
+            margin: auto;
+            background: #e2d8dd;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        button {
+            padding: 10px;
+            width: 100%;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            background: #042549;
+            color: #e2d8dd;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: #042549;
+        }
+        #next-button {
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>English Level Quiz</h1>
+        <div id="question-container">
+            <h2 id="question">Question goes here</h2>
+            <div id="answer-buttons" class="btn-container"></div>
+        </div>
+        <button id="next-button">Next</button>
+        <p id="score"></p>
+    </div>
+
+    <script>
+        const questions = [
+            { question: "What is the plural of 'cat'?", answers: ["Cats", "Cates", "Cat's", "Cat"], correct: "Cats" },
+            { question: "Choose the correct sentence:", answers: ["She go to school.", "She goes to school.", "She going to school.", "She went to school."], correct: "She goes to school." },
+            { question: "What is the past tense of 'eat'?", answers: ["Eated", "Ate", "Eating", "Eats"], correct: "Ate" },
+            { question: "Which word is an adjective?", answers: ["Run", "Jump", "Happy", "Sing"], correct: "Happy" },
+            { question: "Which sentence is correct?", answers: ["I has a dog.", "I have a dog.", "I haved a dog.", "I having a dog."], correct: "I have a dog." },
+            { question: "'He _____ a book now.' Choose the correct verb.", answers: ["Reads", "Read", "Is reading", "Reading"], correct: "Is reading" },
+            { question: "Choose the correct past simple sentence:", answers: ["I see the movie yesterday.", "I saw the movie yesterday.", "I seen the movie yesterday.", "I seed the movie yesterday."], correct: "I saw the movie yesterday." },
+            { question: "What is the opposite of 'big'?", answers: ["Small", "Tall", "Fast", "Thin"], correct: "Small" },
+            { question: "Which sentence is grammatically correct?", answers: ["I have went to the store.", "I have gone to the store.", "I has gone to the store.", "I going to the store."], correct: "I have gone to the store." },
+            { question: "Choose the best option: 'If I ____ rich, I would travel the world.'", answers: ["am", "was", "were", "will be"], correct: "were" },
+            { question: "Which word means the same as 'happy'?", answers: ["Sad", "Angry", "Joyful", "Bored"], correct: "Joyful" },
+            { question: "Which is a correct conditional sentence?", answers: ["If it rains, we will stay inside.", "If it rained, we stay inside.", "If rains, we would stay inside.", "If rain, we stay inside."], correct: "If it rains, we will stay inside." },
+            { question: "Which is a synonym for 'important'?", answers: ["Necessary", "Optional", "Useless", "Weak"], correct: "Necessary" },
+            { question: "Which sentence is correct?", answers: ["She was go to the park.", "She went to the park.", "She gone to the park.", "She going to the park."], correct: "She went to the park." },
+            { question: "Choose the best answer: 'I have never _____ to France.'", answers: ["Been", "Go", "Went", "Going"], correct: "Been" },
+            { question: "Which is the best synonym for 'magnificent'?", answers: ["Average", "Beautiful", "Amazing", "Terrible"], correct: "Amazing" },
+            { question: "What does 'ephemeral' mean?", answers: ["Lasting a short time", "Eternal", "Boring", "Strong"], correct: "Lasting a short time" },
+            { question: "Which sentence is correct?", answers: ["He have been here.", "He has been here.", "He has be here.", "He has being here."], correct: "He has been here." },
+            { question: "Choose the correct sentence:", answers: ["If I was you, I will do it.", "If I were you, I would do it.", "If I were you, I will do it.", "If I was you, I would do it."], correct: "If I were you, I would do it." },
+            { question: "What is the meaning of 'ubiquitous'?", answers: ["Rare", "Everywhere", "Hidden", "Difficult"], correct: "Everywhere" }
+        ];
+
+        const questionElement = document.getElementById("question");
+        const answerButtons = document.getElementById("answer-buttons");
+        const nextButton = document.getElementById("next-button");
+        const scoreElement = document.getElementById("score");
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function startQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            nextButton.style.display = "none";
+            scoreElement.innerText = "";
+            showQuestion();
+        }
+
+        function showQuestion() {
+            resetState();
+            let currentQuestion = questions[currentQuestionIndex];
+            questionElement.innerText = currentQuestion.question;
+
+            currentQuestion.answers.forEach(answer => {
+                const button = document.createElement("button");
+                button.innerText = answer;
+                button.addEventListener("click", () => selectAnswer(answer, currentQuestion.correct));
+                answerButtons.appendChild(button);
+            });
+        }
+
+        function resetState() {
+            nextButton.style.display = "none";
+            answerButtons.innerHTML = "";
+        }
+
+        function selectAnswer(answer, correctAnswer) {
+            if (answer === correctAnswer) score++;
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < questions.length) {
+                showQuestion();
+            } else {
+                endQuiz();
+            }
+        }
+
+        function endQuiz() {
+            let level = ["A1", "A2", "B1", "B2", "C1", "C2"];
+            let levelIndex = Math.min(Math.floor(score / 4), 5);
+            questionElement.innerText = "Quiz Completed!";
+            answerButtons.innerHTML = "";
+            scoreElement.innerText = `Your Score: ${score} / 20\nYour English Level: ${level[levelIndex]}`;
+        }
+
+        startQuiz();
+    </script>
+</body>
+</html>
