@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #a2c8e7; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .todo-container {
+            background-color: white;
+            width: 300px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 24px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        li.completed {
+            text-decoration: line-through;
+            background-color: #e0e0e0;
+        }
+
+        li .remove {
+            color: red;
+            cursor: pointer;
+        }
+
+        .add-btn {
+            background-color: #253779;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .add-btn:hover {
+            background-color: #253779;
+        }
+
+        .checkbox {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="todo-container">
+    <h1>To-Do List</h1>
+    <!-- Input box for new tasks -->
+    <input type="text" id="todoInput" placeholder="Add a new task...">
+    <!-- Button to add tasks -->
+    <button class="add-btn" onclick="addTodo()">Add</button>
+    <!-- List to display tasks -->
+    <ul id="todoList"></ul>
+</div>
+
+<script>
+    // Function to add a new task to the list
+    function addTodo() {
+        // Get the text entered in the input box
+        const input = document.getElementById('todoInput');
+        const newTodo = input.value.trim(); // Remove any extra spaces
+
+        // Only add the task if the input isn't empty
+        if (newTodo !== "") {
+            // Create a new list item (li)
+            const li = document.createElement('li');
+            
+            // Add a checkbox and the task text to the new list item
+            li.innerHTML = `<input type="checkbox" class="checkbox" onclick="toggleComplete(this)"> ${newTodo} <span class="remove" onclick="removeTodo(this)">X</span>`;
+
+            // Add the new list item to the "todoList" ul
+            document.getElementById('todoList').appendChild(li);
+
+            // Clear the input field after adding the task
+            input.value = "";
+        }
+    }
+
+    // Function to remove a task from the list
+    function removeTodo(element) {
+        element.parentElement.remove(); // Remove the list item that contains the "X" button
+    }
+
+    // Function to toggle the "completed" state of a task
+    function toggleComplete(checkbox) {
+        const li = checkbox.parentElement; // Get the list item containing the checkbox
+
+        // If the checkbox is checked, mark the task as completed
+        if (checkbox.checked) {
+            li.classList.add('completed'); // Add a line-through effect and change background
+        } else {
+            li.classList.remove('completed'); // Remove the line-through effect
+        }
+    }
+</script>
+
+</body>
+</html>
